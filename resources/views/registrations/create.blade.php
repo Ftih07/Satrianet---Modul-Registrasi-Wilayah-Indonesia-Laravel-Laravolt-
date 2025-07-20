@@ -223,18 +223,11 @@
                                 <!-- Provinsi -->
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold">Provinsi *</label>
-                                    @php
-                                    $allowedProvinces = [
-                                    ['code' => '33', 'name' => 'JAWA TENGAH'],
-                                    ['code' => '72', 'name' => 'SULAWESI TENGAH'],
-                                    ];
-                                    @endphp
-
                                     <select id="province" name="province_id" class="form-select" required>
                                         <option value="">Pilih Provinsi</option>
-                                        @foreach($allowedProvinces as $province)
-                                        <option value="{{ $province['code'] }}" {{ old('province_id') == $province['code'] ? 'selected' : '' }}>
-                                            {{ $province['name'] }}
+                                        @foreach(\Laravolt\Indonesia\Models\Province::all() as $province)
+                                        <option value="{{ $province->code }}" {{ old('province_id') == $province->code ? 'selected' : '' }}>
+                                            {{ $province->name }}
                                         </option>
                                         @endforeach
                                     </select>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RegistrationController;
@@ -19,6 +20,8 @@ Route::prefix('api')->group(function () {
         Village::where('district_code', $district_code)->get(['code', 'name'])
     );
 });
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
 Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');

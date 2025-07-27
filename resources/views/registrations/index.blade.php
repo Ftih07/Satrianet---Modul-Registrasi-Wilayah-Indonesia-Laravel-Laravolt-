@@ -294,7 +294,11 @@
                                             <span class="badge bg-secondary">{{ $reg->id }}</span>
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge bg-info">{{ $reg->id_product }}</span>
+                                            @if($reg->product)
+                                            <span class="badge bg-info">{{ $reg->product->name }}</span>
+                                            @else
+                                            <span class="text-muted">-</span>
+                                            @endif
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">

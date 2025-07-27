@@ -136,6 +136,14 @@ class RegistrationResource extends Resource
                     'danger' => 'rejected',
                 ]),
 
+            Tables\Columns\TextColumn::make('koordinat')
+                ->label('Koordinat')
+                ->formatStateUsing(fn($state) => $state ?: '-')
+                ->url(fn($record) => $record->koordinat ? "https://maps.google.com/?q={$record->koordinat}" : null)
+                ->openUrlInNewTab()
+                ->icon('heroicon-o-map')
+                ->sortable(),
+
             Tables\Columns\TextColumn::make('created_at')
                 ->label('Tanggal Registrasi')
                 ->dateTime('d M Y H:i')

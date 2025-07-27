@@ -8,7 +8,7 @@ use Laravolt\Indonesia\Models\{Province, City, District, Village};
 class Registration extends Model
 {
     protected $fillable = [
-        'id_product',
+        'product_id',
         'name',
         'email',
         'phone',
@@ -40,5 +40,10 @@ class Registration extends Model
     public function village()
     {
         return $this->belongsTo(Village::class, 'village_code', 'code');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

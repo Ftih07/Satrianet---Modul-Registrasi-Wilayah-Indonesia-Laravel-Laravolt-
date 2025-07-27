@@ -28,83 +28,119 @@ class RegistrationResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('id_product')->required()->unique(ignoreRecord: true),
-            TextInput::make('name')->required(),
-            TextInput::make('phone'),
-            TextInput::make('email')->email(),
-
-            Select::make('province_id')
-                ->label('Provinsi')
-                ->options(Indonesia::allProvinces()->pluck('name', 'id'))
-                ->reactive()
-                ->afterStateUpdated(fn($set) => $set('city_id', null))
+            // Pilih Produk
+            Forms\Components\Select::make('product_id')
+                ->relationship('product', 'name')
+                ->label('Produk')
                 ->required(),
 
-            Select::make('city_id')
+            Forms\Components\TextInput::make('name')->required()->label('Nama Lengkap'),
+            Forms\Components\TextInput::make('phone')->label('Nomor HP'),
+            Forms\Components\TextInput::make('email')->email()->label('Email'),
+
+            // PROVINSI
+            Forms\Components\Select::make('province_code')
+                ->label('Provinsi')
+                ->options(\Laravolt\Indonesia\Models\Province::pluck('name', 'code'))
+                ->reactive()
+                ->afterStateUpdated(fn($set) => $set('city_code', null))
+                ->required(),
+
+            // KOTA
+            Forms\Components\Select::make('city_code')
                 ->label('Kota/Kabupaten')
                 ->options(
                     fn($get) =>
-                    $get('province_id')
-                        ? Indonesia::findProvince($get('province_id'), ['cities'])->cities->pluck('name', 'id')
+                    $get('province_code')
+                        ? \Laravolt\Indonesia\Models\City::where('province_code', $get('province_code'))->pluck('name', 'code')
                         : []
                 )
                 ->reactive()
-                ->afterStateUpdated(fn($set) => $set('district_id', null))
+                ->afterStateUpdated(fn($set) => $set('district_code', null))
                 ->required(),
 
-            Select::make('district_id')
+            // KECAMATAN
+            Forms\Components\Select::make('district_code')
                 ->label('Kecamatan')
                 ->options(
                     fn($get) =>
-                    $get('city_id')
-                        ? Indonesia::findCity($get('city_id'), ['districts'])->districts->pluck('name', 'id')
+                    $get('city_code')
+                        ? \Laravolt\Indonesia\Models\District::where('city_code', $get('city_code'))->pluck('name', 'code')
                         : []
                 )
                 ->reactive()
-                ->afterStateUpdated(fn($set) => $set('village_id', null))
+                ->afterStateUpdated(fn($set) => $set('village_code', null))
                 ->required(),
 
-            Select::make('village_id')
+            // KELURAHAN
+            Forms\Components\Select::make('village_code')
                 ->label('Kelurahan/Desa')
                 ->options(
                     fn($get) =>
-                    $get('district_id')
-                        ? Indonesia::findDistrict($get('district_id'), ['villages'])->villages->pluck('name', 'id')
+                    $get('district_code')
+                        ? \Laravolt\Indonesia\Models\Village::where('district_code', $get('district_code'))->pluck('name', 'code')
                         : []
                 )
                 ->required(),
 
-            Textarea::make('alamat_spesifik')
+            Forms\Components\Textarea::make('alamat_spesifik')
                 ->label('Alamat Spesifik')
                 ->rows(3),
 
-            TextInput::make('koordinat'),
-            TextInput::make('referral'),
-            TextInput::make('status')->default('pending'),
+            Forms\Components\TextInput::make('koordinat')->label('Koordinat'),
+            Forms\Components\TextInput::make('referral')->label('Referral'),
+            Forms\Components\Select::make('status')
+                ->options([
+                    'pending' => 'Pending',
+                    'approved' => 'Approved',
+                    'rejected' => 'Rejected',
+                ])
+                ->default('pending')
+                ->label('Status'),
         ]);
     }
 
 
 
+
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('province_id')
-                    ->label('Provinsi')
-                    ->formatStateUsing(fn($state) => Indonesia::findProvince($state)?->name),
-                TextColumn::make('city_id')
-                    ->label('Kota')
-                    ->formatStateUsing(fn($state) => Indonesia::findCity($state)?->name),
-                TextColumn::make('district_id')
-                    ->label('Kecamatan')
-                    ->formatStateUsing(fn($state) => Indonesia::findDistrict($state)?->name),
-                TextColumn::make('village_id')
-                    ->label('Kelurahan')
-                    ->formatStateUsing(fn($state) => Indonesia::findVillage($state)?->name),
-                TextColumn::make('status')->badge(),
-            ]);
+        return $table->columns([
+            Tables\Columns\TextColumn::make('name')
+                ->label('Nama')
+                ->sortable()
+                ->searchable(),
+
+            Tables\Columns\TextColumn::make('product.name')
+                ->label('Produk')
+                ->sortable()
+                ->searchable(),
+
+            Tables\Columns\TextColumn::make('province.name')
+                ->label('Provinsi'),
+
+            Tables\Columns\TextColumn::make('city.name')
+                ->label('Kota/Kabupaten'),
+
+            Tables\Columns\TextColumn::make('district.name')
+                ->label('Kecamatan'),
+
+            Tables\Columns\TextColumn::make('village.name')
+                ->label('Kelurahan/Desa'),
+
+            Tables\Columns\BadgeColumn::make('status')
+                ->label('Status')
+                ->colors([
+                    'warning' => 'pending',
+                    'success' => 'approved',
+                    'danger' => 'rejected',
+                ]),
+
+            Tables\Columns\TextColumn::make('created_at')
+                ->label('Tanggal Registrasi')
+                ->dateTime('d M Y H:i')
+                ->sortable(),
+        ]);
     }
 
 

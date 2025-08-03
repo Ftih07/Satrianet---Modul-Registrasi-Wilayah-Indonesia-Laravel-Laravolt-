@@ -23,6 +23,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->favicon(asset('assets/images/icon.png')) // favicon browser/tab
             ->default()
             ->id('admin')
             ->path('admin')

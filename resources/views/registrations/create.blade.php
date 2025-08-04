@@ -121,7 +121,7 @@
                                 <select name="product_id" class="form-select" required>
                                     <option value="">Pilih Produk</option>
                                     @foreach(\App\Models\Product::pluck('name', 'id') as $id => $name)
-                                    <option value="{{ $id }}" {{ old('product_id') == $id ? 'selected' : '' }}>
+                                    <option value="{{ $id }}" {{ old('product_id', $selectedProductId) == $id ? 'selected' : '' }}>
                                         {{ $name }}
                                     </option>
                                     @endforeach

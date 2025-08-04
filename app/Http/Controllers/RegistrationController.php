@@ -16,9 +16,11 @@ class RegistrationController extends Controller
         return view('registrations.index', compact('registrations'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('registrations.create');
+        $selectedProductId = $request->query('product_id');
+
+        return view('registrations.create', compact('selectedProductId'));
     }
 
     public function store(Request $request)

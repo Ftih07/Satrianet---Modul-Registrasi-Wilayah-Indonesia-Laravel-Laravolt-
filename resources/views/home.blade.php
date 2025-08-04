@@ -106,11 +106,12 @@
                     </div>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#services" class="text-gray-700 hover:text-primary transition-colors duration-200">Tentang Kami</a>
-                    <a href="#packages" class="text-gray-700 hover:text-primary transition-colors duration-200">Informasi & Promo</a>
-                    <a href="#coverage" class="text-gray-700 hover:text-primary transition-colors duration-200">Paket & Harga</a>
-                    <a href="#contact" class="text-gray-700 hover:text-primary transition-colors duration-200">Coverage Area</a>
-                    <a href="#home" class="text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
+                    <a href="#tentang-kami" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Tentang Kami</a>
+                    <a href="#informasi-dan-promo" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Informasi & Promo</a>
+                    <a href="#paket-dan-harga" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Paket & Harga</a>
+                    <a href="#coverage" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Coverage Area</a>
+                    <a href="#kerja-sama" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Kerja Sama</a>
+                    <a href="{{ route('informations.show', 'informasi-pembayaran-satrianet') }}" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
                     <a href="https://wa.me/6282138304415" target="_blank" rel="noopener noreferrer">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300">
                             Hubungi Kami
@@ -127,13 +128,14 @@
         <!-- Mobile menu -->
         <div class="mobile-menu hidden md:hidden bg-white shadow-lg">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#services" class="block px-3 py-2 text-gray-700 hover:text-primary">Tentang Kami</a>
-                <a href="#packages" class="block px-3 py-2 text-gray-700 hover:text-primary">Informasi & Promo</a>
-                <a href="#coverage" class="block px-3 py-2 text-gray-700 hover:text-primary">Paket & Harga</a>
-                <a href="#contact" class="block px-3 py-2 text-gray-700 hover:text-primary">Coverage Area</a>
-                <a href="#home" class="text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
-                <a href="https://wa.me/6282138304415" target="_blank" rel="noopener noreferrer">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300">
+                <a href="#tentang-kami" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Tentang Kami</a>
+                <a href="#informasi-dan-promo" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Informasi & Promo</a>
+                <a href="#paket-dan-harga" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Paket & Harga</a>
+                <a href="#coverage" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Coverage Area</a>
+                <a href="#kerja-sama" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Kerja Sama</a>
+                <a href="{{ route('informations.show', 'informasi-pembayaran-satrianet') }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
+                <a href="https://wa.me/6282138304415" target="_blank" rel="noopener noreferrer" class="block px-3 py-2">
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-full font-semibold transition-all duration-300">
                         Hubungi Kami
                     </button>
                 </a>
@@ -142,16 +144,16 @@
     </nav>
 
     <!-- Banner Section -->
-    <section id="home" class="relative w-full min-h-[80vh] sm:min-h-screen overflow-hidden">
+    <section class="relative w-full min-h-screen overflow-hidden mt-14">
         @if($banners && $banners->count())
-        <div class="swiper mySwiper w-full h-full sm:h-screen">
-            <div class="swiper-wrapper">
+        <div class="swiper mySwiper w-full h-full">
+            <div class="swiper-wrapper w-full h-full">
                 @foreach($banners as $banner)
-                <div class="swiper-slide">
+                <div class="swiper-slide w-full h-full">
                     <img
                         src="{{ Storage::url($banner->image) }}"
                         alt="{{ $banner->title }}"
-                        class="w-full h-[60vh] sm:h-[80vh] md:h-screen object-cover object-center">
+                        class="w-full h-full object-cover object-center">
                 </div>
                 @endforeach
             </div>
@@ -161,7 +163,7 @@
             <div class="swiper-button-next text-white text-4xl"></div>
         </div>
         @else
-        <div class="w-full min-h-[80vh] sm:min-h-screen flex items-center justify-center bg-gray-200 text-gray-500 text-xl">
+        <div class="w-full min-h-screen flex items-center justify-center bg-gray-200 text-gray-500 text-xl">
             Banner tidak tersedia atau tidak aktif.
         </div>
         @endif
@@ -197,7 +199,7 @@
     </section>
 
     <!-- Tentang Kami -->
-    <section class="py-20 bg-gradient-to-r from-blue-50 to-purple-50">
+    <section id="tentang-kami" class="py-20 bg-gradient-to-r from-blue-50 to-purple-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="animate-slide-up">
@@ -244,35 +246,27 @@
         </div>
     </section>
 
-    <!-- Category Section -->
-    @foreach ($categories as $category)
-    @php
-    // Set bg berdasarkan ganjil/genap
-    $sectionBg = $loop->index % 2 === 0 ? 'bg-white' : 'bg-gradient-to-r from-blue-50 to-blue-100';
-    @endphp
-    <section class="py-20 {{ $sectionBg }}">
+    <!-- Informasi & Promo Section (Gabungan Semua Kategori) -->
+    <section id="informasi-dan-promo" class="py-20 bg-gradient-to-r from-blue-50 to-blue-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">{{ $category->title }}</h2>
-                @if ($category->descriptions)
-                <p class="text-xl text-gray-600">{{ $category->descriptions }}</p>
-                @endif
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Informasi & Promo</h2>
+                <p class="text-xl text-gray-600">Temukan penawaran menarik dari berbagai kategori</p>
             </div>
 
-            @php
-            $count = $category->informations->count();
-            @endphp
-
-            <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] justify-center">
-                @forelse ($category->informations as $info)
-                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-6 text-white card-hover max-w-xs w-full mx-auto">
-                    <div class="mb-4">
+            <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                @foreach ($categories as $category)
+                @foreach ($category->informations as $info)
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-2xl p-6 card-hover h-[500px] flex flex-col justify-between">
+                    <div>
                         @php
                         $start = $info->start_date ? \Carbon\Carbon::parse($info->start_date)->locale('id')->isoFormat('D MMMM Y HH:mm') : null;
                         $end = $info->end_date ? \Carbon\Carbon::parse($info->end_date)->locale('id')->isoFormat('D MMMM Y HH:mm') : null;
+
+                        $isPromo = Str::contains(strtolower($category->title), 'promo');
                         @endphp
 
-                        <span class="bg-yellow-400 text-black text-xs px-3 py-1 rounded-full font-bold flex items-center gap-1">
+                        <span class="bg-yellow-400 text-black text-xs px-3 py-1 rounded-full font-bold flex items-center gap-1 mb-4">
                             @if ($start || $end)
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -280,37 +274,36 @@
                             </svg>
                             {{ $start ?? '–' }} - {{ $end ?? '–' }}
                             @else
-                            PROMO TANPA BATAS WAKTU
+                            {{ $isPromo ? 'PROMO TANPA BATAS WAKTU' : 'INFORMASI' }}
                             @endif
                         </span>
+
+                        @if ($info->image)
+                        <img src="{{ asset('storage/' . $info->image) }}" alt="{{ $info->title }}"
+                            class="rounded-lg mb-4 w-full h-40 object-cover">
+                        @endif
+
+                        <h3 class="text-lg font-bold mb-2">{{ $info->title }}</h3>
+                        <p class="text-sm opacity-90">
+                            {{ \Illuminate\Support\Str::limit(strip_tags($info->content), 100) }}
+                        </p>
                     </div>
 
-                    @if ($info->image)
-                    <img src="{{ asset('storage/' . $info->image) }}"
-                        alt="{{ $info->title }}"
-                        class="rounded-lg mb-4 w-full h-40 object-cover">
-                    @endif
-
-                    <h3 class="text-lg font-bold mb-2">{{ $info->title }}</h3>
-                    <p class="text-sm opacity-90 mb-4">
-                        {{ \Illuminate\Support\Str::limit(strip_tags($info->content), 100) }}
-                    </p>
-                    <a href="{{ route('informations.show', $info->slug) }}"
-                        class="bg-white text-blue-600 px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition-colors">
-                        Baca Selengkapnya ->
-                    </a>
+                    <div class="mt-4">
+                        <a href="{{ route('informations.show', $info->slug) }}"
+                            class="bg-white text-blue-600 px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition-colors">
+                            Baca Selengkapnya →
+                        </a>
+                    </div>
                 </div>
-                @empty
-                <p class="col-span-full text-center text-gray-500">Belum ada informasi pada kategori ini.</p>
-                @endforelse
+                @endforeach
+                @endforeach
             </div>
-
         </div>
     </section>
-    @endforeach
 
     <!-- Packages Section -->
-    <section id="packages" class="py-20 bg-white">
+    <section id="paket-dan-harga" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             @foreach ($productCategories as $category)
             @if ($category->subCategories && $category->subCategories->count())
@@ -375,7 +368,7 @@
     </section>
 
     <!-- Coverage Area -->
-    <section class="py-20 bg-gray-50">
+    <section id="coverage" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-800 mb-4">Coverage Area</h2>
@@ -395,7 +388,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-700">
+    <section id="kerja-sama" class="py-20 bg-gradient-to-r from-blue-600 to-purple-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="text-white">
@@ -466,25 +459,23 @@
                     </div>
                 </div>
 
-                <div class="ml-16">
+                <div class="lg:ml-16">
                     <h4 class="text-lg font-semibold mb-4">Perusahaan</h4>
                     <ul class="space-y-2 text-gray-300">
-                        <li><a href="#" class="hover:text-white transition-colors">Tentang Kami</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Karir</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Press Release</a></li>
+                        <li><a href="#tentang-kami" class="hover:text-white transition-colors">Tentang Kami</a></li>
+                        <li><a href="#tentang-kami" class="hover:text-white transition-colors">Organisasi</a></li>
+                        <li><a href="#tentang-kami" class="hover:text-white transition-colors">Legalitas</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Produk & Layanan</h4>
                     <ul class="space-y-2 text-gray-300">
-                        <li><a href="#" class="hover:text-white transition-colors">Internet Residensial</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Internet Bisnis</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Dedicated Internet</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">IPTV & TV Cable</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">VoIP & Telepon</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">COLOCATION</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Internet Provider</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Internet Dedicated</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">CCTV IPCAM</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Router</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">IP Public Static V4</a></li>
                     </ul>
                 </div>
 
@@ -754,6 +745,35 @@
             effect: "fade",
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sections = document.querySelectorAll("section[id]");
+            const navLinks = document.querySelectorAll(".nav-link");
+
+            function activateNav() {
+                let scrollY = window.pageYOffset;
+
+                sections.forEach(current => {
+                    const sectionHeight = current.offsetHeight;
+                    const sectionTop = current.offsetTop - 100;
+                    const sectionId = current.getAttribute("id");
+
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        navLinks.forEach(link => {
+                            link.classList.remove("text-blue-600", "font-bold");
+                            if (link.getAttribute("href") === `#${sectionId}`) {
+                                link.classList.add("text-blue-600", "font-bold");
+                            }
+                        });
+                    }
+                });
+            }
+
+            window.addEventListener("scroll", activateNav);
+        });
+    </script>
+
 </body>
 
 </html>

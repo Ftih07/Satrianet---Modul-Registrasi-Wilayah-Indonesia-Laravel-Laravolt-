@@ -193,22 +193,25 @@
 
 <body class="font-sans bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50 transition-all duration-300">
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <a href="/">
-                            <img src="{{ asset('assets/images/main_logo.png') }}" alt="SatriaNet Logo" class="h-10 sm:h-12 w-auto">
+                            <img src="{{ asset('assets/images/main_logo.png') }}"
+                                alt="SatriaNet Logo"
+                                class="h-10 sm:h-12 w-auto">
                         </a>
                     </div>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/#services" class="text-gray-700 hover:text-primary transition-colors duration-200">Tentang Kami</a>
-                    <a href="/#packages" class="text-gray-700 hover:text-primary transition-colors duration-200">Informasi & Promo</a>
-                    <a href="/#coverage" class="text-gray-700 hover:text-primary transition-colors duration-200">Paket & Harga</a>
-                    <a href="/#contact" class="text-gray-700 hover:text-primary transition-colors duration-200">Coverage Area</a>
-                    <a href="/#home" class="text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
+                    <a href="{{ route('home') . '#tentang-kami' }}" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Tentang Kami</a>
+                    <a href="{{ route('home') . '#informasi-dan-promo' }}" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Informasi & Promo</a>
+                    <a href="{{ route('home') . '#paket-dan-harga' }}" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Paket & Harga</a>
+                    <a href="{{ route('home') . '#coverage' }}" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Coverage Area</a>
+                    <a href="{{ route('home') . '#kerja-sama' }}" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Kerja Sama</a>
+                    <a href="{{ route('informations.show', 'informasi-pembayaran-satrianet') }}" class="nav-link text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
                     <a href="https://wa.me/6282138304415" target="_blank" rel="noopener noreferrer">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300">
                             Hubungi Kami
@@ -220,6 +223,22 @@
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden bg-white shadow-lg">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="{{ route('home') . '#tentang-kami' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Tentang Kami</a>
+                <a href="{{ route('home') . '#informasi-dan-promo' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Informasi & Promo</a>
+                <a href="{{ route('home') . '##paket-dan-harga' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Paket & Harga</a>
+                <a href="{{ route('home') . '#coverage' }}"" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Coverage Area</a>
+                <a href="{{ route('home') . '#kerja-sama' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Kerja Sama</a>
+                <a href="{{ route('informations.show', 'informasi-pembayaran-satrianet') }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
+                <a href="https://wa.me/6282138304415" target="_blank" rel="noopener noreferrer" class="block px-3 py-2">
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-full font-semibold transition-all duration-300">
+                        Hubungi Kami
+                    </button>
+                </a>
             </div>
         </div>
     </nav>
@@ -525,7 +544,7 @@
                                 @endforeach
                             </div>
 
-                            <a href="/" class="block mt-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300">
+                            <a href="{{ route('home') . '#paket-dan-harga' }}" class="block mt-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300">
                                 <i class="fas fa-th-large mr-2"></i>
                                 Lihat Semua Kategori
                             </a>
@@ -622,11 +641,24 @@
                     @endif
 
                     <div class="p-6">
-                        @if ($article->category)
-                        <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium">
-                            {{ ucfirst($article->category->title) }}
+                        @php
+                        $start = $article->start_date ? \Carbon\Carbon::parse($article->start_date)->locale('id')->isoFormat('D MMMM Y HH:mm') : null;
+                        $end = $article->end_date ? \Carbon\Carbon::parse($article->end_date)->locale('id')->isoFormat('D MMMM Y HH:mm') : null;
+                        $isPromo = Str::contains(strtolower($article->category->title ?? ''), 'promo');
+                        @endphp
+
+                        <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium mb-4">
+                            @if ($isPromo)
+                            @if ($start || $end)
+                            Promo - Batas Waktu
+                            @else
+                            Promo - Tanpa Batas Waktu
+                            @endif
+                            @else
+                            Informasi
+                            @endif
                         </span>
-                        @endif
+
                         <h3 class="text-lg font-bold text-gray-800 mt-3 mb-2">{{ $article->title }}</h3>
                         <p class="text-gray-600 text-sm mb-4">
                             {{ \Illuminate\Support\Str::limit(strip_tags($article->content), 100, '...') }}
@@ -636,6 +668,7 @@
                 </a>
                 @endforeach
             </div>
+
         </div>
     </section>
     @endif
@@ -647,49 +680,56 @@
                 <div>
                     <h3 class="text-2xl font-bold mb-6">PT SATRIA DIGITAL MEDIA</h3>
                     <div class="space-y-2 text-gray-300">
+
+                        <!-- Alamat: buka Google Maps -->
                         <p>
                             <a href="https://maps.app.goo.gl/ZSCQJEnEfAWzn7wj7" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-start">
                                 <i class="fas fa-map-marker-alt mr-2"></i>
                                 Jl. Arsadimedja, Perum Bumi Teluk Permai Blok F No. 16 Teluk, Purwokerto Selatan, Banyumas, Jawa Tengah 53124
                             </a>
                         </p>
+
+                        <!-- No telpon -->
                         <p>
                             <a href="tel:02817781133" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center">
                                 <i class="fas fa-phone mr-2"></i> 0281–7781133
                             </a>
                         </p>
+
+                        <!-- Email: buka email client -->
                         <p>
                             <a href="mailto:info@satrianet.co.id" class="hover:text-white transition-colors flex items-center">
                                 <i class="fas fa-envelope mr-2"></i> info@satrianet.co.id
                             </a>
                         </p>
+
+                        <!-- Website: buka satrianet.id -->
                         <p>
                             <a href="https://satrianet.id" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors flex items-center">
                                 <i class="fas fa-globe mr-2"></i> satrianet.id
                             </a>
                         </p>
+
                     </div>
                 </div>
 
-                <div class="ml-16">
+                <div class="lg:ml-16">
                     <h4 class="text-lg font-semibold mb-4">Perusahaan</h4>
                     <ul class="space-y-2 text-gray-300">
-                        <li><a href="#" class="hover:text-white transition-colors">Tentang Kami</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Karir</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Press Release</a></li>
+                        <li><a href="{{ route('home') . '#tentang-kami' }}" class="hover:text-white transition-colors">Tentang Kami</a></li>
+                        <li><a href="{{ route('home') . '#tentang-kami' }}" class="hover:text-white transition-colors">Organisasi</a></li>
+                        <li><a href="{{ route('home') . '#tentang-kami' }}" class="hover:text-white transition-colors">Legalitas</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Produk & Layanan</h4>
                     <ul class="space-y-2 text-gray-300">
-                        <li><a href="#" class="hover:text-white transition-colors">Internet Residensial</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Internet Bisnis</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Dedicated Internet</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">IPTV & TV Cable</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">VoIP & Telepon</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">COLOCATION</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Internet Provider</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Internet Dedicated</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">CCTV IPCAM</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Router</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">IP Public Static V4</a></li>
                     </ul>
                 </div>
 

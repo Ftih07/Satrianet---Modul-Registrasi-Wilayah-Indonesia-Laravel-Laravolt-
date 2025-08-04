@@ -297,7 +297,7 @@
                     </p>
                     <a href="{{ route('informations.show', $info->slug) }}"
                         class="bg-white text-blue-600 px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-100 transition-colors">
-                        GABUNG SEKARANG
+                        Baca Selengkapnya ->
                     </a>
                 </div>
                 @empty

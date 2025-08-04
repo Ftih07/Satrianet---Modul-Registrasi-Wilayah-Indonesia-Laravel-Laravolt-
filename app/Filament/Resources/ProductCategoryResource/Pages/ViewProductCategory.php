@@ -102,9 +102,7 @@ class ViewProductCategory extends ViewRecord
                         TextEntry::make('products_count')
                             ->label('Total Produk')
                             ->icon('heroicon-m-cube')
-                            ->getStateUsing(function ($record) {
-                                return $record->products()->count();
-                            })
+                            ->getStateUsing(fn($record) => $record->products()->count())
                             ->badge()
                             ->color('info')
                             ->size('lg'),
@@ -112,22 +110,19 @@ class ViewProductCategory extends ViewRecord
                         TextEntry::make('active_products_count')
                             ->label('Produk Aktif')
                             ->icon('heroicon-m-check-circle')
-                            ->getStateUsing(function ($record) {
-                                return $record->products()->where('status', true)->count();
-                            })
+                            ->getStateUsing(fn($record) => $record->products()->where('products.status', true)->count())
                             ->badge()
                             ->color('success'),
 
                         TextEntry::make('inactive_products_count')
                             ->label('Produk Tidak Aktif')
                             ->icon('heroicon-m-x-circle')
-                            ->getStateUsing(function ($record) {
-                                return $record->products()->where('status', false)->count();
-                            })
+                            ->getStateUsing(fn($record) => $record->products()->where('products.status', false)->count())
                             ->badge()
                             ->color('danger'),
                     ])
                     ->columns(3),
+
 
                 Section::make('Informasi Sistem')
                     ->description('Data teknis dan riwayat kategori')

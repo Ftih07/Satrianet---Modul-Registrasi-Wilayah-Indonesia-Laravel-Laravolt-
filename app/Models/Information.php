@@ -15,10 +15,17 @@ class Information extends Model
         'content',
         'meta_keywords',
         'status',
+        'start_date', // ← new
+        'end_date',   // ← new
     ];
 
     public function category()
     {
         return $this->belongsTo(CategoryInformation::class, 'category_information_id');
     }
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
 }

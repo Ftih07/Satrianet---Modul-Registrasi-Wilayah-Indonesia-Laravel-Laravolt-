@@ -4,7 +4,8 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RegistrationController;
-
+use App\Http\Controllers\InformationsController;
+use App\Http\Controllers\ProductSubCategoryController;
 use Laravolt\Indonesia\Models\{City, District, Village};
 
 Route::prefix('api')->group(function () {
@@ -22,8 +23,9 @@ Route::prefix('api')->group(function () {
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/informasi/{slug}', [InformationsController::class, 'show'])->name('informations.show');
+Route::get('/subcategories/{slug}', [ProductSubCategoryController::class, 'show'])->name('subcategories.show');
 
 Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
 Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');
-Route::get('/registrations/view', [RegistrationController::class, 'index'])->name('registrations.index');
 

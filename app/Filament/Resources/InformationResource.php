@@ -147,7 +147,7 @@ class InformationResource extends Resource
                                 '4:3',
                                 '1:1',
                             ])
-                            ->maxSize(2048) // 2MB
+                            ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->helperText('Format: JPEG, PNG, WebP. Maksimal 2MB. Rasio yang disarankan: 16:9')
                             ->imagePreviewHeight('200')
@@ -181,6 +181,29 @@ class InformationResource extends Resource
                                     ->default(true)
                                     ->inline(false)
                                     ->columnSpan(1),
+                            ]),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
+
+                Section::make('Periode Promo')
+                    ->description('Isi jika informasi ini bagian dari promo')
+                    ->icon('heroicon-o-calendar-days')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('start_date')
+                                    ->label('Tanggal Mulai Promo')
+                                    ->seconds(false)
+                                    ->timezone('Asia/Jakarta') // optional biar waktu lokal
+                                    ->helperText('Boleh dikosongkan jika tidak ada promo'),
+
+                                Forms\Components\DateTimePicker::make('end_date')
+                                    ->label('Tanggal Berakhir Promo')
+                                    ->afterOrEqual('start_date')
+                                    ->seconds(false)
+                                    ->timezone('Asia/Jakarta')
+                                    ->helperText('Boleh dikosongkan jika tidak ada promo'),
                             ]),
                     ])
                     ->collapsible()
@@ -235,6 +258,20 @@ class InformationResource extends Resource
                     ->falseColor('danger')
                     ->tooltip(fn($record) => $record->status ? 'Dipublikasikan' : 'Draft')
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('start_date')
+                    ->label('Mulai Promo')
+                    ->dateTime('d M Y H:i')
+                    ->sortable()
+                    ->placeholder('—')
+                    ->color('info')
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('end_date')
+                    ->label('Berakhir Promo')
+                    ->dateTime('d M Y H:i')
+                    ->placeholder(fn($record) => $record->end_date ? null : 'Tanpa Batas')
+                    ->color(fn($record) => $record->end_date === null ? 'gray' : 'danger'),
 
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Slug')
@@ -395,6 +432,16 @@ class InformationResource extends Resource
                                     ->badge()
                                     ->color(fn($record) => $record->status ? 'success' : 'danger')
                                     ->formatStateUsing(fn($state) => $state ? 'Dipublikasikan' : 'Draft'),
+
+                                TextEntry::make('start_date')
+                                    ->label('Mulai Promo')
+                                    ->dateTime('d M Y H:i')
+                                    ->placeholder('—'),
+
+                                TextEntry::make('end_date')
+                                    ->label('Berakhir Promo')
+                                    ->dateTime('d M Y H:i')
+                                    ->placeholder(fn($record) => $record->end_date ? null : 'Tanpa Batas'),
                             ]),
                     ]),
 

@@ -737,28 +737,31 @@
 
                         <div class="tab-content mt-3">
                             <div class="tab-pane fade show active text-center" id="mobile-tutorial">
-                                <img src="path/to/mobile-tutorial.gif"
+                                <video src="{{ asset('assets/gif/gif-mobile.mp4') }}"
                                     class="img-fluid rounded shadow-sm"
                                     alt="Tutorial Mobile"
-                                    style="max-height: 300px;">
+                                    style="max-height: 300px;" autoplay muted loop playsinline>
+                                </video>
                                 <p class="text-muted mt-2 small">Cara mendapatkan koordinat di smartphone</p>
                             </div>
 
                             <div class="tab-pane fade text-center" id="desktop-tutorial">
-                                <img src="path/to/desktop-tutorial.gif"
+                                <video src="{{ asset('assets/gif/git-dekstop.mp4') }}"
                                     class="img-fluid rounded shadow-sm"
                                     alt="Tutorial Desktop"
-                                    style="max-height: 300px;">
+                                    style="max-height: 300px;" autoplay muted loop playsinline>
+                                </video>
                                 <p class="text-muted mt-2 small">Cara mendapatkan koordinat di komputer</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Footer -->

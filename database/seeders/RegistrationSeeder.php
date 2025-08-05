@@ -4,33 +4,48 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Registration;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class RegistrationSeeder extends Seeder
 {
     public function run(): void
     {
-        // Ambil beberapa data wilayah secara acak dari Laravolt
-        $province = \Laravolt\Indonesia\Models\Province::inRandomOrder()->first();
-        $city     = $province->cities()->inRandomOrder()->first();
-        $district = $city->districts()->inRandomOrder()->first();
-        $village  = $district->villages()->inRandomOrder()->first();
+        $path = database_path('data/registrations.json');
 
-        for ($i = 1; $i <= 5; $i++) {
+        if (!File::exists($path)) {
+            $this->command->error("File not found at $path");
+            return;
+        }
+
+        $json = File::get($path);
+        $data = json_decode($json, true);
+
+        if (!is_array($data)) {
+            $this->command->error("Invalid JSON structure.");
+            return;
+        }
+
+        foreach ($data as $item) {
             Registration::create([
-                'id_product'      => 'PRD-' . Str::upper(Str::random(6)),
-                'name'            => 'User ' . $i,
-                'phone'           => '08123' . rand(100000, 999999),
-                'email'           => 'user' . $i . '@example.com',
-                'province_id'     => $province->id,
-                'city_id'         => $city->id,
-                'district_id'     => $district->id,
-                'village_id'      => $village->id,
-                'alamat_spesifik' => 'Jl. Contoh No. ' . $i,
-                'koordinat'       => '-6.2' . rand(100, 999) . ',106.8' . rand(100, 999),
-                'referral'        => 'REF' . $i,
-                'status'          => 'pending',
+                'product_id'       => null,
+                'name' => $item['name'] ?? 'Tanpa Nama',
+                'phone'            => $item['phone'] ?? null,
+                'email'            => $item['email'] ?? null,
+
+                'province_code'    => null,
+                'city_code'        => null,
+                'district_code'    => null,
+                'village_code'     => null,
+
+                'alamat_spesifik'  => $item['address'] ?? null,
+                'koordinat'        => $item['koordinat'] ?? null,
+                'referral'         => $item['referral'] ?? null,
+                'status'           => null,
+                'created_at'       => $item['created_at'] ?? now(),
+                'updated_at'       => $item['updated_at'] ?? now(),
             ]);
         }
+
+        $this->command->info(count($data) . " registrations imported successfully.");
     }
 }

@@ -30,6 +30,9 @@ use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Section as InfoSection;
 use Filament\Infolists\Components\Grid as InfoGrid;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Collection;
 
 class RegistrationResource extends Resource
 {
@@ -115,8 +118,7 @@ class RegistrationResource extends Resource
                                 $set('city_code', null);
                                 $set('district_code', null);
                                 $set('village_code', null);
-                            })
-                            ->required(),
+                            }),
 
                         // KOTA
                         Select::make('city_code')
@@ -134,8 +136,7 @@ class RegistrationResource extends Resource
                             ->afterStateUpdated(function ($set) {
                                 $set('district_code', null);
                                 $set('village_code', null);
-                            })
-                            ->required(),
+                            }),
 
                         // KECAMATAN
                         Select::make('district_code')
@@ -150,8 +151,7 @@ class RegistrationResource extends Resource
                             ->searchable()
                             ->preload()
                             ->live()
-                            ->afterStateUpdated(fn($set) => $set('village_code', null))
-                            ->required(),
+                            ->afterStateUpdated(fn($set) => $set('village_code', null)),
 
                         // KELURAHAN
                         Select::make('village_code')
@@ -164,8 +164,7 @@ class RegistrationResource extends Resource
                                     : []
                             )
                             ->searchable()
-                            ->preload()
-                            ->required(),
+                            ->preload(),
                     ]),
 
                     Textarea::make('alamat_spesifik')
@@ -342,6 +341,159 @@ class RegistrationResource extends Resource
             ])
             ->bulkActions([
                 BulkActionGroup::make([
+                    // Bulk action untuk update product dan status
+                    BulkAction::make('updateProductStatus')
+                        ->label('Update Produk & Status')
+                        ->icon('heroicon-o-arrow-path')
+                        ->color('info')
+                        ->form([
+                            Select::make('product_id')
+                                ->label('Produk')
+                                ->relationship('product', 'name')
+                                ->placeholder('Pilih produk...')
+                                ->searchable()
+                                ->preload(),
+
+                            Select::make('status')
+                                ->label('Status')
+                                ->options([
+                                    'pending' => 'Pending',
+                                    'approved' => 'Disetujui',
+                                    'rejected' => 'Ditolak',
+                                ])
+                                ->placeholder('Pilih status...')
+                                ->native(false),
+                        ])
+                        ->action(function (Collection $records, array $data): void {
+                            $updateData = [];
+
+                            // Hanya update field yang diisi
+                            if (!empty($data['product_id'])) {
+                                $updateData['product_id'] = $data['product_id'];
+                            }
+
+                            if (!empty($data['status'])) {
+                                $updateData['status'] = $data['status'];
+                            }
+
+                            // Jika tidak ada data yang diupdate, tampilkan pesan error
+                            if (empty($updateData)) {
+                                Notification::make()
+                                    ->title('Gagal!')
+                                    ->body('Pilih minimal satu field (Produk atau Status) untuk diupdate.')
+                                    ->warning()
+                                    ->send();
+                                return;
+                            }
+
+                            $records->each(function ($record) use ($updateData) {
+                                $record->update($updateData);
+                            });
+
+                            $message = 'Berhasil update ';
+                            $updates = [];
+                            if (isset($updateData['product_id'])) $updates[] = 'produk';
+                            if (isset($updateData['status'])) $updates[] = 'status';
+                            $message .= implode(' dan ', $updates) . ' untuk ' . $records->count() . ' data.';
+
+                            Notification::make()
+                                ->title('Berhasil!')
+                                ->body($message)
+                                ->success()
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->modalHeading('Update Produk & Status')
+                        ->modalDescription('Pilih field yang ingin diupdate. Field yang dikosongkan tidak akan diubah.')
+                        ->modalSubmitActionLabel('Update'),
+
+                    // Bulk action khusus untuk approve
+                    BulkAction::make('bulkApprove')
+                        ->label('Setujui Semua')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->action(function (Collection $records): void {
+                            $records->each(function ($record) {
+                                $record->update(['status' => 'approved']);
+                            });
+
+                            Notification::make()
+                                ->title('Berhasil!')
+                                ->body($records->count() . ' pendaftaran berhasil disetujui.')
+                                ->success()
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->modalHeading('Setujui Pendaftaran')
+                        ->modalDescription('Apakah Anda yakin ingin menyetujui semua pendaftaran yang dipilih?')
+                        ->modalSubmitActionLabel('Setujui'),
+
+                    // Bulk action khusus untuk reject
+                    BulkAction::make('bulkReject')
+                        ->label('Tolak Semua')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->form([
+                            Textarea::make('reason')
+                                ->label('Alasan Penolakan')
+                                ->placeholder('Masukkan alasan penolakan (opsional)')
+                                ->rows(3)
+                                ->maxLength(500),
+                        ])
+                        ->action(function (Collection $records, array $data): void {
+                            $records->each(function ($record) use ($data) {
+                                $record->update([
+                                    'status' => 'rejected',
+                                    'rejection_reason' => $data['reason'] ?? null, // Jika ada field untuk alasan
+                                ]);
+                            });
+
+                            Notification::make()
+                                ->title('Berhasil!')
+                                ->body($records->count() . ' pendaftaran berhasil ditolak.')
+                                ->success()
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->modalHeading('Tolak Pendaftaran')
+                        ->modalDescription('Apakah Anda yakin ingin menolak semua pendaftaran yang dipilih?')
+                        ->modalSubmitActionLabel('Tolak'),
+
+                    // Bulk action untuk assign ke produk tertentu
+                    BulkAction::make('assignProduct')
+                        ->label('Assign Produk')
+                        ->icon('heroicon-o-shopping-bag')
+                        ->color('warning')
+                        ->form([
+                            Select::make('product_id')
+                                ->label('Produk')
+                                ->relationship('product', 'name')
+                                ->placeholder('Pilih produk...')
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+                        ])
+                        ->action(function (Collection $records, array $data): void {
+                            $records->each(function ($record) use ($data) {
+                                $record->update(['product_id' => $data['product_id']]);
+                            });
+
+                            Notification::make()
+                                ->title('Berhasil!')
+                                ->body('Produk berhasil di-assign untuk ' . $records->count() . ' data.')
+                                ->success()
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->requiresConfirmation()
+                        ->modalHeading('Assign Produk')
+                        ->modalDescription('Apakah Anda yakin ingin meng-assign produk untuk data yang dipilih?')
+                        ->modalSubmitActionLabel('Assign'),
+
+                    // Existing delete action
                     DeleteBulkAction::make()
                         ->label('Hapus Terpilih'),
                 ]),

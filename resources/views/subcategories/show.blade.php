@@ -4,8 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/images/icon.png') }}" type="image/x-icon">
+
+    <!-- Primary Meta Tags -->
     <title>{{ $subcategory->name }} - SatriaNet</title>
+    <meta name="title" content="{{ $subcategory->name }} - SatriaNet">
+    <meta name="description" content="{{ $subcategory->description ?? 'Nikmati layanan internet cepat, stabil, dan terjangkau dari SatriaNet.' }}">
+    <meta name="keywords" content="{{ $subcategory->meta_keywords }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $subcategory->name }} - SatriaNet">
+    <meta property="og:description" content="{{ $subcategory->description ?? 'Nikmati layanan internet cepat, stabil, dan terjangkau dari SatriaNet.' }}">
+    <meta property="og:image" content="{{ asset('assets/images/icon.png') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="{{ $subcategory->name }} - SatriaNet">
+    <meta name="twitter:description" content="{{ $subcategory->description ?? 'Nikmati layanan internet cepat, stabil, dan terjangkau dari SatriaNet.' }}">
+    <meta name="twitter:image" content="{{ asset('assets/images/icon.png') }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ url()->current() }}">
     <meta name="description" content="{{ $subcategory->description ?? $subcategory->name }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -231,7 +255,7 @@
                 <a href="{{ route('home') . '#tentang-kami' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Tentang Kami</a>
                 <a href="{{ route('home') . '#informasi-dan-promo' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Informasi & Promo</a>
                 <a href="{{ route('home') . '##paket-dan-harga' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Paket & Harga</a>
-                <a href="{{ route('home') . '#coverage' }}"" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Coverage Area</a>
+                <a href="{{ route('home') . '#coverage' }}"" class=" nav-link block px-3 py-2 text-gray-700 hover:text-primary">Coverage Area</a>
                 <a href="{{ route('home') . '#kerja-sama' }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary">Kerja Sama</a>
                 <a href="{{ route('informations.show', 'informasi-pembayaran-satrianet') }}" class="nav-link block px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-200">Cara Bayar</a>
                 <a href="https://wa.me/6282138304415" target="_blank" rel="noopener noreferrer" class="block px-3 py-2">

@@ -4,8 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('assets/images/icon.png') }}" type="image/x-icon">
+
+    <!-- Primary Meta Tags -->
     <title>{{ $information->title }} - SatriaNet</title>
+    <meta name="title" content="{{ $information->title }} - SatriaNet">
+    <meta name="description" content="{{ $information->sub_title ?? Str::limit(strip_tags($information->content), 150) }}">
+    <meta name="keywords" content="{{ $information->meta_keywords }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $information->title }} - SatriaNet">
+    <meta property="og:description" content="{{ $information->sub_title ?? Str::limit(strip_tags($information->content), 150) }}">
+    <meta property="og:image" content="{{ $information->image ? asset('storage/' . $information->image) : asset('assets/images/icon.png') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="{{ $information->title }} - SatriaNet">
+    <meta name="twitter:description" content="{{ $information->sub_title ?? Str::limit(strip_tags($information->content), 150) }}">
+    <meta name="twitter:image" content="{{ $information->image ? asset('storage/' . $information->image) : asset('assets/images/icon.png') }}">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url()->current() }}">
     <meta name="description" content="{{ strip_tags($information->content) }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>

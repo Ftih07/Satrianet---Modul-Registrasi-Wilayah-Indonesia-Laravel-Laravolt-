@@ -3,7 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Form Registrasi - SatriaNet</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Form Registrasi Internet SatriaNet — Daftar Sekarang!</title>
+    <meta name="title" content="Form Registrasi Internet SatriaNet — Daftar Sekarang!">
+    <meta name="description" content="Daftar sekarang untuk menikmati layanan internet super cepat dari SatriaNet. Proses mudah, dukungan teknis 24/7, dan jaringan fiber optik terbaik.">
+    <link rel="icon" href="{{ asset('assets/images/icon.png') }}" type="image/x-icon">
+    <meta name="keywords" content="satrianet, registrasi internet, daftar internet satrianet, pasang internet rumah, internet cepat Purwokerto, internet fiber optik, daftar wifi satrianet, internet unlimited, satrianet fiber, layanan internet murah, pasang wifi cepat, internet satrianet, pendaftaran wifi, internet Jawa Tengah, internet Banyumas, daftar layanan internet terbaik">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Form Registrasi Internet SatriaNet — Daftar Sekarang!">
+    <meta property="og:description" content="Daftar sekarang untuk menikmati layanan internet super cepat dari SatriaNet. Proses mudah, dukungan teknis 24/7, dan jaringan fiber optik terbaik.">
+    <meta property="og:image" content="{{ asset('assets/images/icon.png') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url()->current() }}">
+    <meta name="twitter:title" content="Form Registrasi Internet SatriaNet — Daftar Sekarang!">
+    <meta name="twitter:description" content="Daftar sekarang untuk menikmati layanan internet super cepat dari SatriaNet. Proses mudah, dukungan teknis 24/7, dan jaringan fiber optik terbaik.">
+    <meta name="twitter:image" content="{{ asset('assets/images/icon.png') }}">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="{{ url()->current() }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap CSS -->
@@ -664,7 +688,7 @@
                             Klik tombol <i class="fas fa-location-arrow text-primary"></i> di samping kolom koordinat,
                             dan izinkan browser mengakses lokasi Anda. Koordinat akan terisi otomatis.
                         </div>
-                    </div>  
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <h6 class="fw-bold text-success">

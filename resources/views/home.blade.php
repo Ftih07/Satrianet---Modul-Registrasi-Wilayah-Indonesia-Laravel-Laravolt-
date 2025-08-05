@@ -4,7 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SatriaNet - Internet Cepat dan Stabil</title>
+    <link rel="icon" href="{{ asset('assets/images/icon.png') }}" type="image/x-icon">
+
+    <!-- SEO Meta Tags -->
+    <title>SatriaNet - Internet Cepat & Stabil untuk Rumah dan Bisnis</title>
+    <meta name="description" content="SatriaNet menyediakan layanan internet fiber optik cepat, stabil, dan andal untuk kebutuhan rumah maupun bisnis. Jangkauan luas, harga bersahabat.">
+    <meta name="keywords" content="SatriaNet, Internet Fiber, Provider Internet Banyumas, WiFi Cepat, Internet Dedicated, Satrianet Official">
+    <meta name="author" content="PT Satria Digital Media">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url('/') }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="SatriaNet - Internet Cepat & Stabil untuk Rumah dan Bisnis">
+    <meta property="og:description" content="Nikmati koneksi internet super cepat dan stabil dari SatriaNet. Layanan unggulan dengan support 24/7 dan teknologi 100% fiber optik.">
+    <meta property="og:image" content="{{ asset('assets/images/icon.png') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url('/') }}">
+    <meta name="twitter:title" content="SatriaNet - Internet Cepat & Stabil untuk Rumah dan Bisnis">
+    <meta name="twitter:description" content="Nikmati koneksi internet super cepat dan stabil dari SatriaNet. Layanan unggulan dengan support 24/7 dan teknologi 100% fiber optik.">
+    <meta name="twitter:image" content="{{ asset('assets/images/icon.png') }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Include Swiper CSS & JS -->

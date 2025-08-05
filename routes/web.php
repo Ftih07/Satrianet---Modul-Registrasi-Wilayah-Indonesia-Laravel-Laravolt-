@@ -29,3 +29,12 @@ Route::get('/subcategories/{slug}', [ProductSubCategoryController::class, 'show'
 Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
 Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');
 
+Route::get('/tes-403', function () {
+    abort(403);
+});
+Route::get('/tes-500', function () {
+    abort(500);
+});
+Route::get('/tes-503', function () {
+    abort(503);
+});
